@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.post('/api/todos', async (req, res) => {
+app.post('/api/todos/:name', async (req, res) => {
   if(!req.body.name)
     res.send('No name provided').status(400);
 
@@ -29,7 +29,7 @@ app.post('/api/todos', async (req, res) => {
   }
 });
 
-app.get('/api/todos', async (req, res) => {
+app.get('/api/todos/:name', async (req, res) => {
   try {
     const todos = await Todo.find();
     res.status(200).json(todos);
@@ -38,7 +38,7 @@ app.get('/api/todos', async (req, res) => {
   }
 });
 
-app.delete('/api/todos/:id', async (req, res) => {
+app.delete('/api/todos/:name/:id', async (req, res) => {
   try {
     const todo = await Todo.deleteOne({_id: req.params.id})
     res.status(200).json(todo);
