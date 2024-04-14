@@ -18,11 +18,13 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/todos', async (req, res) => {
-  if(!req.body.name)
-    res.send('No name provided').status(400);
+  const {name, user} = req.body;
+
+  if(!name || !user)
+    res.send('No name or user provided').status(400);
 
   try {
-    const todo = await Todo.create(req.body);
+    const todo = await Todo.create({ name, user });
     res.status(200).json(todo);
   } catch (error) {
     res.status(500).send(error);
@@ -30,8 +32,13 @@ app.post('/api/todos', async (req, res) => {
 });
 
 app.get('/api/todos', async (req, res) => {
+  const {user} = req.body;
+
+  if(!user)
+    res.send('No user provided').status(400);
+
   try {
-    const todos = await Todo.find();
+    const todos = await Todo.find({ user });
     res.status(200).json(todos);
   } catch (error) {
     res.status(500).send(error);
