@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/todos', async (req, res) => {
-  const {name, user} = req.body;
+  const { name, user } = req.body;
 
   if(!name || !user)
     res.send('No name or user provided').status(400);
@@ -31,12 +31,8 @@ app.post('/api/todos', async (req, res) => {
   }
 });
 
-app.get('/api/todos', async (req, res) => {
-  const {user} = req.body;
-
-  if(!user)
-    res.send('No user provided').status(400);
-
+app.get('/api/todos/:user', async (req, res) => {
+  const { user } = req.params;
   try {
     const todos = await Todo.find({ user });
     res.status(200).json(todos);
